@@ -1,4 +1,4 @@
-package com.xgh.test.thread.week2;
+package com.xgh.test.thread.week02;
 
 /**
  * com.xgh.test.thread.week2.AlarmAgentTest

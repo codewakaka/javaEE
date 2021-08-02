@@ -1,4 +1,4 @@
-package com.xgh.test.thread.week2;
+package com.xgh.test.thread.week02;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

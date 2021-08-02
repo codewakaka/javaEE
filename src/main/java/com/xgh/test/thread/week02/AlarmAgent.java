@@ -1,6 +1,5 @@
-package com.xgh.test.thread.week2;
+package com.xgh.test.thread.week02;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +30,7 @@ public class AlarmAgent {
 
     //上报报警信息给报警服务
     public void sendAlarm(AlarmInfo alarmInfo) throws Exception {
-        //构建guardedAction
+        //构建guardedAction(要执行的方法)
         GuardedAction<Void> guardedAction = new GuardedAction<Void>(agentConnected) {
             @Override
             public Void call() throws Exception {
@@ -40,7 +39,7 @@ public class AlarmAgent {
                 return null;
             }
         };
-        //通过blocker执行目标
+        //通过blocker执行目标（判断是否连接成功，如果连接成功就调用目标方法doSendAlarm发送报警通知）
         blocker.callWithGuard(guardedAction);
 
     }
@@ -48,7 +47,7 @@ public class AlarmAgent {
     //发送报警信息给报警服务器
     private void doSendAlarm(AlarmInfo alarmInfo) {
         //建立socket连接
-        System.out.println("start send alarm " + alarmInfo);
+        System.out.println("执行发送报警方法start send alarm " + alarmInfo);
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
@@ -65,6 +64,7 @@ public class AlarmAgent {
     //reConnected: 重新和报警中心建立连接
     //onDisconnected: 断开和报警中心的连接
     public void init() {
+        //出发连接
         Thread connectingThread = new Thread(new ConnectingTask());
         connectingThread.start();
         //定时任务
@@ -89,6 +89,7 @@ public class AlarmAgent {
     //确定报警器和服务建立连接
     private void onConnected() {
         try {
+            System.out.println("连接成功后将标识位connectedServer 修改成true，同时唤醒其他的等待线程");
             blocker.signalAfter(() -> {
                 System.out.println("update connectedServer = true ");
                 connectedToServer = true;
@@ -135,14 +136,17 @@ public class AlarmAgent {
 
         @Override
         public void run() {
+            //与服务器连接
+            System.out.println("与服务连接执行");
             try {
                 //休息10s
+                System.out.println("睡十秒假装连接");
                 Thread.sleep(10 * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //连接建立完成1
-            System.out.println("alarm connected");
+            System.out.println("alarm connected 假装连接成功");
 
             onConnected();
         }

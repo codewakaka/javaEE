@@ -1,4 +1,4 @@
-package com.xgh.test.thread.week2;
+package com.xgh.test.thread.week02;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Condition;
@@ -46,13 +46,14 @@ public class ConditionVarBlocker implements Blocker{
             final Predicate predicate = guardedAction.predicate;
             //对应connectedToServer的值的改变
             while (!predicate.evaluate()){
-                System.out.println("alarm connecting alarm system,thread  wait");
+
+                System.out.println("判断是否能够执行，如果不行，线程进入等待 alarm connecting alarm system,thread  wait");
                 //条件不满足
                 condition.await();
                 //当线程从条件等待队列欢迎后，获取锁成功，然后再次尝试去判断条件是否满足
             }
             //条件满足，执行目标内容
-            System.out.println("alarm connected execute call");
+            System.out.println("条件满足，执行线程，alarm connected execute call");
             return guardedAction.call();
         }finally {
             lock.unlock();
@@ -61,11 +62,13 @@ public class ConditionVarBlocker implements Blocker{
 
     @Override
     public void signalAfter(Callable<Boolean> stateOperation) throws Exception {
+        //获取锁
         lock.lockInterruptibly();
         try {
+            //执行传入的方法，看是否能唤醒线程
             if(stateOperation.call()){
                 //条件满足唤醒
-                System.out.println("alarm connected,signal thread");
+                System.out.println("唤醒等待线程，alarm connected,signal thread");
                 condition.signal();
             }
         }finally {
