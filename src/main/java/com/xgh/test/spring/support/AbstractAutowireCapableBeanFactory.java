@@ -2,6 +2,7 @@ package com.xgh.test.spring.support;
 
 import com.xgh.test.spring.config.BeanDefinition;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanCreationException;
 
 /**
  * com.xgh.test.spring.support.AbstractAutowireCapableBeanFactory
@@ -14,16 +15,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     @Override
     protected Object creatBean(String beanName, BeanDefinition beanDefinition) throws BeansException {
-
         Object bean = null;
-
-            try {
-                bean = beanDefinition.getBeanClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw  new BeansException("install bean fail" + e);
-            }
-
-        addSingleBean(beanName,bean);
+        try {
+            bean = beanDefinition.getBeanClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new BeanCreationException("install bean fail" + e);
+        }
+        addSingleBean(beanName, bean);
         return bean;
     }
 }
