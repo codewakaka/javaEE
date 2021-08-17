@@ -1,11 +1,11 @@
-package com.xgh.test.spring.config;
+package com.xgh.test.spring.step02.config;
 
 /**
- * com.xgh.test.spring.config.BeanDefinition
+ * com.xgh.test.spring.step02.config.BeanDefinition
  *
  * @author xgh <br/>
  * @description
- * @date 2021年08月16日
+ * @date 2021年08月17日
  */
 public class BeanDefinition {
 
