@@ -77,7 +77,7 @@ public class ApiTests {
                 return super.hashCode();
             }
         });
-        Object o = enhancer.create(new Class[]{String.class}, new Object[]{"王五"});
+        Object o = enhancer.createClass();
         System.out.println(o);
     }
 }

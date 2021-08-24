@@ -1,7 +1,11 @@
 package com.xgh.test.spring.step03.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.xgh.test.spring.step03.BeansException;
+import com.xgh.test.spring.step03.PropertyValue;
+import com.xgh.test.spring.step03.PropertyValues;
 import com.xgh.test.spring.step03.config.BeanDefinition;
+import com.xgh.test.spring.step03.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 
@@ -46,7 +50,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     };
 
     protected  void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition){
-
+       try {
+           PropertyValues propertyValues = beanDefinition.getPropertyValues();
+           for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
+               String name = propertyValue.getName();
+               Object value = propertyValue.getValue();
+               if(value instanceof BeanReference){
+                   //a依赖b
+                   BeanReference beanReference =  (BeanReference)value;
+                   value = getBean(beanReference.getBeanName());
+               }
+               BeanUtil.setFieldValue(bean,name,value);
+           }
+       }catch (Exception e){
+           throw new BeansException("Error setting property values" + beanName);
+       }
 
 
     };
