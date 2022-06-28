@@ -3,6 +3,11 @@ package com.xgh.test.spring.step04.beans.factory.support;
 import com.xgh.test.spring.step04.beans.BeansException;
 import com.xgh.test.spring.step04.beans.factory.BeanFactory;
 import com.xgh.test.spring.step04.beans.factory.config.BeanDefinition;
+import com.xgh.test.spring.step04.beans.factory.config.BeanPostProcessor;
+import com.xgh.test.spring.step04.beans.factory.config.ConfigurableBeanFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * com.xgh.test.spring.step02.support.AbstractBeanFactory
@@ -11,7 +16,9 @@ import com.xgh.test.spring.step04.beans.factory.config.BeanDefinition;
  * @description 抽象类定义模板方法
  * @date 2021年08月17日
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     @Override
     public Object getBean(String beanName) throws BeansException {
@@ -41,4 +48,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.remove(beanPostProcessor);
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    public List<BeanPostProcessor>  getBeanPostProcessors(){
+        return this.beanPostProcessors;
+    }
 }

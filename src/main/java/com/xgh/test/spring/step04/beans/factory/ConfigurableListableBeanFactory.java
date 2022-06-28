@@ -3,6 +3,7 @@ package com.xgh.test.spring.step04.beans.factory;
 import com.xgh.test.spring.step04.beans.BeansException;
 import com.xgh.test.spring.step04.beans.factory.config.AutowireCapableBeanFactory;
 import com.xgh.test.spring.step04.beans.factory.config.BeanDefinition;
+import com.xgh.test.spring.step04.beans.factory.config.BeanPostProcessor;
 import com.xgh.test.spring.step04.beans.factory.config.ConfigurableBeanFactory;
 
 /**
@@ -14,5 +15,10 @@ import com.xgh.test.spring.step04.beans.factory.config.ConfigurableBeanFactory;
  */
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
-    BeanDefinition getBeanDefinition(String beanName)throws BeansException;
+    BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+
+    void preInstantiateSingletons() throws BeansException;
+
+
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 }

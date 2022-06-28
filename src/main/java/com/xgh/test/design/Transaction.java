@@ -103,5 +103,16 @@ public class Transaction {
         return true;
     }
 
+    public static void main(String[] args) {
+        Integer[] a = new Integer[]{1,2,3,4,5};
+
+        a[2] = 5;
+        for (Integer integer : a) {
+            System.out.println(integer);
+        }
+
+
+    }
+
 
 }
