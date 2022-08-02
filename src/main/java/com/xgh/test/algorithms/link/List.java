@@ -1,4 +1,4 @@
-package com.xgh.test.algorithms;
+package com.xgh.test.algorithms.link;
 
 public interface List<E> {
 
